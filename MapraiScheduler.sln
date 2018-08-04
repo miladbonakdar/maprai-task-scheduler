@@ -1,0 +1,25 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.27130.2026
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "MapraiScheduler", "MapraiScheduler\MapraiScheduler.csproj", "{F694FE80-E405-4CD7-8EAF-326480EA7852}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F694FE80-E405-4CD7-8EAF-326480EA7852}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F694FE80-E405-4CD7-8EAF-326480EA7852}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F694FE80-E405-4CD7-8EAF-326480EA7852}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F694FE80-E405-4CD7-8EAF-326480EA7852}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {F8CD0F73-3CE2-4418-AA69-4D49B67A6E31}
+	EndGlobalSection
+EndGlobal
