@@ -28,11 +28,11 @@ namespace MapraiScheduler.Repositories
             await _mapRaiContex.SaveChangesAsync();
         }
 
-        public async Task<bool> ChackIfIsLateNotify(long invalidPhonePhoneId, int timeStampMiniute)
+        public async Task<bool> ChechIfNotifyDoesNotExist(long invalidPhonePhoneId, int timeStampMiniute)
         {
             var lastNotify = await _mapRaiContex.Notifiers.Where(not =>
                 not.PhoneID != null && not.PhoneID == invalidPhonePhoneId &&
-                (DateTime.Now - not.CreationDate).Minutes > timeStampMiniute).FirstOrDefaultAsync();
+                (DateTime.Now - not.CreationDate).Minutes < timeStampMiniute).FirstOrDefaultAsync();
             return lastNotify == null;
         }
     }

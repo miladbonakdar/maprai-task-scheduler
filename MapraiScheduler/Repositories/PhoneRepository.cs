@@ -58,12 +58,12 @@ namespace MapraiScheduler.Repositories
 
         public async Task<List<Phone>> GetInvalidPhones(int threshHold)
         {
-            var users = await _mapRaiContex.Phones.Where(item => (DateTime.Now - item.LastActiveTime)
+            var phones = await _mapRaiContex.Phones.Where(item => (DateTime.Now - item.LastActiveTime)
                                                           .TotalMinutes > threshHold).ToListAsync();
             var invalidPhones = new List<Phone>();
-            foreach (var invalidPhone in users)
+            foreach (var invalidPhone in phones)
             {
-                if (await _notifyRepository.ChackIfIsLateNotify(invalidPhone.PhoneID, 7 * 24 * 60))
+                if (await _notifyRepository.ChechIfNotifyDoesNotExist(invalidPhone.PhoneID, 7 * 24 * 60))
                     invalidPhones.Add(invalidPhone);
             }
 

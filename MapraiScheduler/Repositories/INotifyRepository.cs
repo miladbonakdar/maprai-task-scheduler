@@ -10,6 +10,6 @@ namespace MapraiScheduler.Repositories
 
         Task AddRange(List<Notify> notifyRange);
 
-        Task<bool> ChackIfIsLateNotify(long invalidPhonePhoneId, int timeStampMiniute);
+        Task<bool> ChechIfNotifyDoesNotExist(long invalidPhonePhoneId, int timeStampMiniute);
     }
 }

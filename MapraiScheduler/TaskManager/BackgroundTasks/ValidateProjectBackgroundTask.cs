@@ -10,7 +10,7 @@ namespace MapraiScheduler.TaskManager.BackgroundTasks
 {
     public class ValidateProjectBackgroundTask : BackgroundTask, IValidateProjectBackgroundTask
     {
-        public int Interval { get; } = 15;//minute
+        public int Interval { get; } = 15;// 15 minute
 
         public ValidateProjectBackgroundTask(ICheckAutoStopProject checkAutoStopProject,
             ICheckOutOfTimeCommand checkOutOfTimeCommand, ICheckProjectUserActivity checkProjectUserActivity,

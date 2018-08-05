@@ -75,7 +75,7 @@ namespace MapraiScheduler.TaskManager.Commands
                             PriorityName = notifyDtos.PriorityName,
                             Priority = notifyDtos.Priority,
                             ProjectID = notifyDtos.ProjectID,
-                            UserID = notifyDtos.UserID,
+                            UserID = user.UserID,
                             OrganizationID = notifyDtos.OrganizationID,
                             PhoneNumber = notifyDtos.PhoneNumber,
                             NotifyTypeID = notifyDtos.NotifyTypeID,
