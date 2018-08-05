@@ -70,9 +70,9 @@ namespace MapraiScheduler.Repositories
                     ProjectID = item.Project.ProjectID,
                     PhoneNumber = item.Phone.PhoneNumber,
                     PersianDateTime = "",
-                    ProjectPhoneDetail = item.Phone.FullName + " - " + item.Phone.PhoneNumber,
+                    ProjectPhoneDetail = $"{item.Phone.FullName} - {item.Phone.PhoneNumber.ToString()}",
                     ProjectDetailUrl = NotifySetting.EmailStatics.ProjectBaseUrl + item.Project.ProjectID.ToString(),
-                    ProjectAdminDetail = item.User.FullName + " - " + item.User.PhoneNumber,
+                    ProjectAdminDetail = $"{item.Phone.FullName} - {item.Phone.PhoneNumber.ToString()}",
                     ProjectPhoneDetailUrl = NotifySetting.EmailStatics.PhoneBaseUrl + item.Phone.PhoneID.ToString(),
                     OrganizationID = item.Depo.OrganPositionID
                 }).Where(project => projectIds.Any(id => id == project.ProjectID)).ToListAsync();

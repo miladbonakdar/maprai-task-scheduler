@@ -45,7 +45,7 @@ namespace MapraiScheduler.Repositories
                     PhoneNumber = item.Phone.PhoneNumber,
                     ProjectID = 0,
                     PersianDateTime = "",
-                    ProjectPhoneDetail = item.Phone.FullName + " - " + item.Phone.PhoneNumber,
+                    ProjectPhoneDetail = $"{item.Phone.FullName} - {item.Phone.PhoneNumber.ToString()}",
                     ProjectDetailUrl = "",
                     ProjectAdminDetail = "نا معلوم",
                     ProjectPhoneDetailUrl = NotifySetting.EmailStatics.PhoneBaseUrl + item.Phone.PhoneID.ToString(),

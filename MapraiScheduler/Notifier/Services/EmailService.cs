@@ -68,5 +68,36 @@ namespace MapraiScheduler.Notifier.Services
                 throw;
             }
         }
+
+        public static void SendEmailRange(Mailer mailer)
+        {
+            //https://stackoverflow.com/questions/32260/sending-email-in-net-through-gmail
+            var smtp = new SmtpClient
+            {
+                Host = NotifySetting.EmailStatics.GoogleSmtpAddress,
+                Port = NotifySetting.EmailStatics.GoogleSmtpPort,
+                EnableSsl = true,
+                DeliveryMethod = SmtpDeliveryMethod.Network,
+                UseDefaultCredentials = false,
+                Credentials = new NetworkCredential(mailer.FromAddress.Address, mailer.Password)
+            };
+            try
+            {
+                using (var message = new MailMessage(mailer.FromAddress, mailer.ToAddress)
+                {
+                    Subject = mailer.subject,
+                    Body = mailer.body,
+                    IsBodyHtml = true
+                })
+                {
+                    smtp.Send(message);
+                }
+            }
+            catch (System.Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
     }
 }
