@@ -15,7 +15,7 @@ namespace MapraiScheduler.Notifier
             [Description("غیر ضروری")]
             Low = 1,
 
-            [Description("معملی")]
+            [Description("معمولی")]
             Medium = 2,
 
             [Description("مهم")]
@@ -62,6 +62,10 @@ namespace MapraiScheduler.Notifier
             public static string VeryLateProject => "VeryLateProject";
             public static string NoUserActivity => "NoUserActivity";
             public static string AutoStopProject => "AutoStopProject";
+            public static string LateProjectReport => "LateProjectReport";
+            public static string LateDamageReport1 => "LateDamageReport1";
+            public static string LateDamageReport2 => "LateDamageReport2";
+            public static string LateDamageReport3 => "LateDamageReport3";
         }
 
         public static class SmsStatics

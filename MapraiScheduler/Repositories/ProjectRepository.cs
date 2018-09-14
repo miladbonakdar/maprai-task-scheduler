@@ -86,8 +86,31 @@ namespace MapraiScheduler.Repositories
             foreach (var project in invalidProjects)
             {
                 project.ProjectPhaseID = 3;
+                project.FinishDate = DateTime.Now;
             }
             _mapRaiContex.SaveChangesAsync();
+        }
+
+        public async Task<List<Project>> GetEmptyReportProjects()
+        {
+            return await _mapRaiContex.Projects.Join(_mapRaiContex.Notifiers, p => p.ProjectID, n => n.ProjectID,
+                    (p, n) => new { Project = p, Notify = n })
+                    .Where(item => item.Notify == null || item.Notify.NotifyID == 0 || item.Notify.NotifyID == null)
+                .Where(item => (DateTime.Now - item.Project.FinishDate).Days >= 1 &&
+                               (item.Project.ProjectPhaseID == 1 || item.Project.ProjectPhaseID == 3)
+                               && (item.Project.ReportRawFileID == 0 || item.Project.ReportFileID == 0))
+                .Select(item => item.Project).ToListAsync();
+        }
+
+        public async Task<List<Project>> GetEmptyDamageReportProjects(int level)
+        {
+            return await _mapRaiContex.Projects.Join(_mapRaiContex.Notifiers, p => p.ProjectID, n => n.ProjectID,
+                    (p, n) => new { Project = p, Notify = n })
+                    .Where(item => item.Notify == null || item.Notify.NotifyID == 0 || item.Notify.NotifyID == null)
+                    .Where(item => (DateTime.Now - item.Project.FinishDate).Days >= 1 &&
+                               (item.Project.ProjectPhaseID == 1 || item.Project.ProjectPhaseID == 3)
+                               && (item.Project.ReportRawFileID == 0 || item.Project.ReportFileID == 0))
+                .Select(item => item.Project).ToListAsync();
         }
     }
 }

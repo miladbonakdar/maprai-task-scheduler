@@ -10,6 +10,10 @@ namespace MapraiScheduler.Repositories
     {
         Task<List<Project>> GetValidActiveProjects(string uniqueName);
 
+        Task<List<Project>> GetEmptyReportProjects();
+
+        Task<List<Project>> GetEmptyDamageReportProjects(int level);
+
         IQueryable<Project> GetAll();
 
         Task<List<NotifyDTO>> GetInvalidProjectsNotifies(List<long> projectIds, string notifyUniqueName);

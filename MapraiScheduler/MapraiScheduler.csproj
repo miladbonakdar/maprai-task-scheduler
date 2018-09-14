@@ -58,13 +58,17 @@
   </ItemGroup>
 
   <ItemGroup>
-    <None Include="TaskManager\Commands\Action\StopProjectsAction.cs" />
+    <None Include="TaskManager\Commands\ProjectCommands\Actions\StopProjectsAction.cs" />
   </ItemGroup>
 
   <ItemGroup>
     <Reference Include="Kavenegar">
       <HintPath>..\Kavenegar.dll</HintPath>
     </Reference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="TaskManager\Commands\ReportCommands\Actions\" />
   </ItemGroup>
 
 </Project>

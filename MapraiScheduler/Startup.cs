@@ -11,6 +11,7 @@ using MapraiScheduler.TaskManager;
 using MapraiScheduler.TaskManager.BackgroundTasks;
 using MapraiScheduler.TaskManager.Commands;
 using MapraiScheduler.TaskManager.Commands.Action;
+using MapraiScheduler.TaskManager.Commands.ReportCommands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.EntityFrameworkCore;
@@ -39,19 +40,25 @@ namespace MapraiScheduler
             //default
             //https://www.c-sharpcorner.com/article/schedule-background-jobs-using-hangfire-in-asp-net-core/
             //the database should be created first
+            ManageDependencyInjections(services);
+        }
 
+        private void ManageDependencyInjections(IServiceCollection services)
+        {
             services.AddHangfire(options => options.UseSqlServerStorage(Configuration["HangFireConnectionString"]));
             //Statics.MySQLConnectionString = ;
             services.AddSingleton<IConfiguration>(Configuration);
             services.AddDbContext<MapRaiContex>(x => x.UseMySQL(Configuration["AppConnectionString"]));
             //tasks
-            services.AddScoped<IValidateAssessmentBackgroundTask, ValidateAssessmentBackgroundTask>();
+            services.AddScoped<IValidateReportsBackgroundTask, ValidateReportsBackgroundTask>();
             services.AddScoped<IValidateProjectBackgroundTask, ValidateProjectBackgroundTask>();
             //commands
             services.AddScoped<ICheckAutoStopProject, CheckAutoStopProject>();
             services.AddScoped<ICheckOutOfTimeCommand, CheckOutOfTimeCommand>();
             services.AddScoped<ICheckVeryLateProject, CheckVeryLateProject>();
             services.AddScoped<ICheckProjectUserActivity, CheckProjectUserActivity>();
+            services.AddScoped<ICheckDamageReports, CheckDamageReports>();
+            services.AddScoped<ICheckProjectReports, CheckProjectReports>();
             services.AddScoped<ILogCommand, LogCommand>();
             //Actions
             services.AddScoped<IStopProjectsAction, StopProjectsAction>();
@@ -61,6 +68,8 @@ namespace MapraiScheduler
             services.AddScoped<IPhoneRepository, PhoneRepository>();
             services.AddScoped<IProjectRepository, ProjectRepository>();
             services.AddScoped<IUserRepository, UserRepository>();
+            services.AddScoped<IProjectReportRepository, ProjectReportRepository>();
+            services.AddScoped<IDamageReportRepository, DamageReportRepository>();
             //notifiers
             services.AddScoped<IEmailNotifier, EmailNotifier>();
             services.AddScoped<ISmsNotifier, SmsNotifier>();

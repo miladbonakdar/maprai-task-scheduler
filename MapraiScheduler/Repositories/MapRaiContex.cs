@@ -13,10 +13,6 @@ namespace MapraiScheduler.Repositories
         public MapRaiContex(DbContextOptions<MapRaiContex> options)
             : base(options)
         { }
-        //protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-        //{
-        //    optionsBuilder.UseMySQL(Statics.MySQLConnectionString);
-        //}
 
         public DbSet<Notify> Notifiers { get; set; }
         public DbSet<NotifyType> NotifyTypes { get; set; }
@@ -26,5 +22,7 @@ namespace MapraiScheduler.Repositories
         public DbSet<Admin> Admins { get; set; }
         public DbSet<Station> Stations { get; set; }
         public DbSet<Depo> Depos { get; set; }
+        public DbSet<DamageReport> DamageReports { get; set; }
+        public DbSet<ProjectReport> ProjectReports { get; set; }
     }
 }
