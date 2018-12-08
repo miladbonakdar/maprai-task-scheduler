@@ -18,6 +18,7 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Reflection;
+using MapraiScheduler.Exception;
 using ILogger = Serilog.ILogger;
 
 namespace MapraiScheduler
@@ -50,20 +51,20 @@ namespace MapraiScheduler
                 {
                     FromEmail = NotifySetting.EmailStatics.FromEmailAddress,
                     ToEmail = "miladbonak@gmail.com",
-                    MailServer = "smtp.gmail.com",
+                    MailServer = NotifySetting.EmailStatics.GoogleSmtpAddress,
                     NetworkCredentials = new NetworkCredential
                     {
                         UserName = NotifySetting.EmailStatics.FromEmailAddress,
                         Password = NotifySetting.EmailStatics.FromEmailPassword
                     },
                     EnableSsl = true,
-                    Port = 465,
+                    Port = 587,
                     EmailSubject = NotifySetting.EmailStatics.SerlogEmailSubject
                 },
-            "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}",
-            batchPostingLimit: 10
-            , restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
-            .CreateLogger();
+                    "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}",
+                    batchPostingLimit: 10
+                    , restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
+                .CreateLogger();
 
             ManageDependencyInjections(services);
         }
@@ -132,7 +133,14 @@ namespace MapraiScheduler
                     "{controller=Home}/{action=Index}/{id?}");
             });
 
-            (provider.CreateInstance<TaskManager.TaskManager>()).StartBackgroundTasks();
+            try
+            {
+                provider.CreateInstance<TaskManager.TaskManager>().StartBackgroundTasks();
+            }
+            catch (System.Exception e)
+            {
+                throw new AppDefaultException(e);
+            }
         }
 
         //private void AddConfigurationFromFile()

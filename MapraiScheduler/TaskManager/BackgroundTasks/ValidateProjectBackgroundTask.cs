@@ -1,4 +1,5 @@
 ﻿using Hangfire;
+using MapraiScheduler.Exception;
 using MapraiScheduler.TaskManager.Commands;
 
 namespace MapraiScheduler.TaskManager.BackgroundTasks
@@ -27,15 +28,29 @@ namespace MapraiScheduler.TaskManager.BackgroundTasks
 
         public override void Setup()
         {
-            RecurringJob.AddOrUpdate(() => HandleValidateProject(), $"*/{Interval} * * * *");
+            try
+            {
+                RecurringJob.AddOrUpdate(() => HandleValidateProject(), $"*/{Interval} * * * *");
+            }
+            catch (System.Exception exception)
+            {
+                throw new AppDefaultException(exception);
+            }
         }
 
         public void HandleValidateProject()
         {
-            foreach (ICommand backgroundCommand in BackgroundCommands)
+            try
             {
-                //maybe it should be backgroundCommand.Execute().GetAwaiter().GetResult()
-                backgroundCommand.Execute();
+                foreach (ICommand backgroundCommand in BackgroundCommands)
+                {
+                    //maybe it should be backgroundCommand.Execute().GetAwaiter().GetResult()
+                    backgroundCommand.Execute();
+                }
+            }
+            catch (System.Exception exception)
+            {
+                throw new AppDefaultException(exception);
             }
         }
     }
