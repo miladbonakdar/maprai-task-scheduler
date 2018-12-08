@@ -1,8 +1,7 @@
-﻿using System.Collections.Generic;
-using Hangfire;
-using MapraiScheduler.Exception;
+﻿using MapraiScheduler.Exception;
 using MapraiScheduler.TaskManager.Commands;
 using MapraiScheduler.TaskManager.IBackgroundTasks;
+using System.Collections.Generic;
 
 namespace MapraiScheduler.TaskManager.BackgroundTasks
 {

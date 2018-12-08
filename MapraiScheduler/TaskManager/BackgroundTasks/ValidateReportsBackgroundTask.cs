@@ -1,11 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Hangfire;
+﻿using Hangfire;
 using MapraiScheduler.TaskManager.Commands;
 using MapraiScheduler.TaskManager.Commands.ReportCommands;
-using MapraiScheduler.TaskManager.IBackgroundTasks;
 
 namespace MapraiScheduler.TaskManager.BackgroundTasks
 {

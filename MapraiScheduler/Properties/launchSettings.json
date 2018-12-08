@@ -18,10 +18,11 @@
     "MapraiScheduler": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "http://localhost:50505/hangfire",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
-      "applicationUrl": "http://localhost:52531/"
+      "applicationUrl": "http://localhost:50505/"
     }
   }
 }

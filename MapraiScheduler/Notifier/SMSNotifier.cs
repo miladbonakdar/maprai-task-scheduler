@@ -1,9 +1,7 @@
-﻿using System;
+﻿using MapraiScheduler.Models.DTO;
+using MapraiScheduler.Notifier.Services;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
-using MapraiScheduler.Models.DTO;
-using MapraiScheduler.Notifier.Services;
 
 namespace MapraiScheduler.Notifier
 {

@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MapraiScheduler.Exception;
+﻿using MapraiScheduler.Exception;
 using MapraiScheduler.TaskManager.BackgroundTasks;
 using MapraiScheduler.TaskManager.IBackgroundTasks;
+using System.Collections.Generic;
 
 namespace MapraiScheduler.TaskManager
 {

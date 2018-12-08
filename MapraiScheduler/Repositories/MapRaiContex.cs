@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Hangfire;
-using MapraiScheduler.Models.Database;
+﻿using MapraiScheduler.Models.Database;
 using Microsoft.EntityFrameworkCore;
 
 namespace MapraiScheduler.Repositories

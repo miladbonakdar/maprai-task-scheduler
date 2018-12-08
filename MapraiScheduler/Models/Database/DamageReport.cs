@@ -1,10 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using MySqlX.XDevAPI.Relational;
+using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Linq;
-using System.Threading.Tasks;
-using MySqlX.XDevAPI.Relational;
 
 namespace MapraiScheduler.Models.Database
 {
@@ -38,5 +35,7 @@ namespace MapraiScheduler.Models.Database
         public long LetterFileID { get; set; }
         public long PreDamageReportID { get; set; }
         public bool IsArchive { get; set; }
+        public long ReplyFileID { get; set; }
+        public bool IsFinished { get; set; }
     }
 }

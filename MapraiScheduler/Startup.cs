@@ -1,13 +1,6 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Reflection;
-using System.Threading.Tasks;
-using Hangfire;
+﻿using Hangfire;
 using MapraiScheduler.Notifier;
 using MapraiScheduler.Repositories;
-using MapraiScheduler.TaskManager;
 using MapraiScheduler.TaskManager.BackgroundTasks;
 using MapraiScheduler.TaskManager.Commands;
 using MapraiScheduler.TaskManager.Commands.Action;
@@ -18,6 +11,14 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Serilog;
+using Serilog.Sinks.Email;
+using Serilog.Sinks.SystemConsole.Themes;
+using System;
+using System.Linq;
+using System.Net;
+using System.Reflection;
+using ILogger = Serilog.ILogger;
 
 namespace MapraiScheduler
 {
@@ -28,18 +29,42 @@ namespace MapraiScheduler
             Configuration = configuration;
         }
 
-        public IConfiguration Configuration { get; set; }
+        public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            AddConfigurationFromFile();
+            //AddConfigurationFromFile();
             services.AddMvc();
             //for mysql database see
             //https://github.com/stulzq/Hangfire.MySql.Core
             //default
             //https://www.c-sharpcorner.com/article/schedule-background-jobs-using-hangfire-in-asp-net-core/
             //the database should be created first
+
+            //logger
+            //https://stackoverflow.com/questions/46942106/trying-to-configure-serilog-email-sink-with-appsettings-json-to-work-with-gmail
+            Log.Logger = new LoggerConfiguration().WriteTo.File("log-.txt", rollingInterval: RollingInterval.Day)
+                .WriteTo.Console(theme: AnsiConsoleTheme.Code)
+                .WriteTo.Email(new EmailConnectionInfo
+                {
+                    FromEmail = NotifySetting.EmailStatics.FromEmailAddress,
+                    ToEmail = "miladbonak@gmail.com",
+                    MailServer = "smtp.gmail.com",
+                    NetworkCredentials = new NetworkCredential
+                    {
+                        UserName = NotifySetting.EmailStatics.FromEmailAddress,
+                        Password = NotifySetting.EmailStatics.FromEmailPassword
+                    },
+                    EnableSsl = true,
+                    Port = 465,
+                    EmailSubject = NotifySetting.EmailStatics.SerlogEmailSubject
+                },
+            "{Timestamp:yyyy-MM-dd HH:mm:ss.fff zzz} [{Level}] {Message}{NewLine}{Exception}",
+            batchPostingLimit: 10
+            , restrictedToMinimumLevel: Serilog.Events.LogEventLevel.Error)
+            .CreateLogger();
+
             ManageDependencyInjections(services);
         }
 
@@ -74,6 +99,8 @@ namespace MapraiScheduler
             services.AddScoped<IEmailNotifier, EmailNotifier>();
             services.AddScoped<ISmsNotifier, SmsNotifier>();
             services.AddScoped<IAppNotifier, AppNotifier>();
+            //logger
+            services.AddSingleton<ILogger>(Log.Logger);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -89,6 +116,8 @@ namespace MapraiScheduler
             }
             else
             {
+                app.UseBrowserLink();
+                app.UseDeveloperExceptionPage();
                 app.UseExceptionHandler("/Home/Error");
             }
 
@@ -99,21 +128,21 @@ namespace MapraiScheduler
             app.UseMvc(routes =>
             {
                 routes.MapRoute(
-                    name: "default",
-                    template: "{controller=Home}/{action=Index}/{id?}");
+                    "default",
+                    "{controller=Home}/{action=Index}/{id?}");
             });
 
             (provider.CreateInstance<TaskManager.TaskManager>()).StartBackgroundTasks();
         }
 
-        private void AddConfigurationFromFile()
-        {
-            //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-2.1&tabs=basicconfiguration
-            var builder = new ConfigurationBuilder()
-            .SetBasePath(Directory.GetCurrentDirectory())
-            .AddJsonFile("appsettings.json");
-            Configuration = builder.Build();
-        }
+        //private void AddConfigurationFromFile()
+        //{
+        //    //https://docs.microsoft.com/en-us/aspnet/core/fundamentals/configuration/?view=aspnetcore-2.1&tabs=basicconfiguration
+        //    var builder = new ConfigurationBuilder()
+        //    .SetBasePath(Directory.GetCurrentDirectory())
+        //    .AddJsonFile("appsettings.json");
+        //    Configuration = builder.Build();
+        //}
     }
 
     public static class ServiceProviderExtensions

@@ -1,6 +1,6 @@
-﻿using System.Linq;
+﻿using MapraiScheduler.Models.Database;
+using System.Linq;
 using System.Threading.Tasks;
-using MapraiScheduler.Models.Database;
 
 namespace MapraiScheduler.Repositories
 {

@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MD.PersianDateTime;
+﻿using MD.PersianDateTime;
+using System;
 
 namespace MapraiScheduler.Services
 {

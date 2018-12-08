@@ -13,11 +13,9 @@
 		factory( jQuery );
 	}
 }(function( $ ) {
-
 $.extend($.fn, {
 	// http://jqueryvalidation.org/validate/
 	validate: function( options ) {
-
 		// if nothing is selected, return nothing; can't chain anyway
 		if ( !this.length ) {
 			if ( options && options.debug && window.console ) {
@@ -39,7 +37,6 @@ $.extend($.fn, {
 		$.data( this[ 0 ], "validator", validator );
 
 		if ( validator.settings.onsubmit ) {
-
 			this.on( "click.validate", ":submit", function( event ) {
 				if ( validator.settings.submitHandler ) {
 					validator.submitButton = event.target;
@@ -235,7 +232,6 @@ $.validator.format = function( source, params ) {
 };
 
 $.extend( $.validator, {
-
 	defaults: {
 		messages: {},
 		groups: {},
@@ -345,7 +341,6 @@ $.extend( $.validator, {
 	autoCreateRanges: false,
 
 	prototype: {
-
 		init: function() {
 			this.labelContainer = $( this.settings.errorLabelContainer );
 			this.errorContext = this.labelContainer.length && this.labelContainer || $( this.currentForm );
@@ -635,7 +630,6 @@ $.extend( $.validator, {
 			for ( method in rules ) {
 				rule = { method: method, parameters: rules[ method ] };
 				try {
-
 					result = $.validator.methods[ method ].call( this, val, element, rule.parameters );
 
 					// if a method indicates that the field is optional and therefore valid,
@@ -864,7 +858,6 @@ $.extend( $.validator, {
 		},
 
 		validationTargetFor: function( element ) {
-
 			// If radio/checkbox, validate first element in group instead
 			if ( this.checkable( element ) ) {
 				element = this.findByName( element.name );
@@ -954,7 +947,6 @@ $.extend( $.validator, {
 				.off( ".validate" )
 				.removeData( "validator" );
 		}
-
 	},
 
 	classRuleSettings: {
@@ -991,7 +983,6 @@ $.extend( $.validator, {
 	},
 
 	normalizeAttributeRule: function( rules, type, method, value ) {
-
 		// convert the value to a number for number inputs, and for text for backwards compability
 		// allows type="date" and others to be compared as strings
 		if ( /min|max/.test( method ) && ( type === null || /number|range|text/.test( type ) ) ) {
@@ -1006,7 +997,6 @@ $.extend( $.validator, {
 		if ( value || value === 0 ) {
 			rules[ method ] = value;
 		} else if ( type === method && type !== "range" ) {
-
 			// exception: the jquery validate 'range' method
 			// does not test for the html5 'range' type
 			rules[ method ] = true;
@@ -1020,7 +1010,6 @@ $.extend( $.validator, {
 			method, value;
 
 		for ( method in $.validator.methods ) {
-
 			// support for <input required> in both html5 and older browsers
 			if ( method === "required" ) {
 				value = element.getAttribute( method );
@@ -1159,7 +1148,6 @@ $.extend( $.validator, {
 	},
 
 	methods: {
-
 		// http://jqueryvalidation.org/required-method/
 		required: function( value, element, param ) {
 			// check if dependency is met
@@ -1188,7 +1176,6 @@ $.extend( $.validator, {
 
 		// http://jqueryvalidation.org/url-method/
 		url: function( value, element ) {
-
 			// Copyright (c) 2010-2013 Diego Perini, MIT licensed
 			// https://gist.github.com/dperini/729294
 			// see also https://mathiasbynens.be/demo/url-regex
@@ -1358,7 +1345,6 @@ $.extend( $.validator, {
 			return "pending";
 		}
 	}
-
 });
 
 // ajax mode: abort
@@ -1394,5 +1380,4 @@ if ( $.ajaxPrefilter ) {
 		return ajax.apply(this, arguments);
 	};
 }
-
 }));

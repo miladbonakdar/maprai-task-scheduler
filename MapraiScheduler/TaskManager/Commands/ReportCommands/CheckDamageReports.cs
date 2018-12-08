@@ -1,10 +1,11 @@
-﻿using System;
+﻿using MapraiScheduler.Models.Database;
+using MapraiScheduler.Models.DTO;
+using MapraiScheduler.Notifier;
+using MapraiScheduler.Repositories;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MapraiScheduler.Models.Database;
-using MapraiScheduler.Notifier;
-using MapraiScheduler.Repositories;
 
 namespace MapraiScheduler.TaskManager.Commands.ReportCommands
 {
@@ -42,9 +43,66 @@ namespace MapraiScheduler.TaskManager.Commands.ReportCommands
             //await RunActions();
         }
 
-        public Task NotifyProblems()
+        public async Task NotifyProblems()
         {
-            throw new NotImplementedException();
+            var notify1 = await _projectRepository.GetInvalidProjectsNotifies(_invalidReport1Projs.Select(item => item.ProjectID).ToList(),
+                   NotifySetting.NotifyTypeUniqueName.LateDamageReport1);
+
+            var notify2 = await _projectRepository.GetInvalidProjectsNotifies(_invalidReport2Projs.Select(item => item.ProjectID).ToList(),
+                   NotifySetting.NotifyTypeUniqueName.LateDamageReport2);
+
+            var notify3 = await _projectRepository.GetInvalidProjectsNotifies(_invalidReport3Projs.Select(item => item.ProjectID).ToList(),
+                   NotifySetting.NotifyTypeUniqueName.LateDamageReport3);
+            var notifyDtos = await GenerateNotifies(notify1);
+            foreach (var notifier in Notifiers)
+            {
+                notifier.CreateNotifyRange(notifyDtos).SendNotifyRange();
+            }
+            notifyDtos = await GenerateNotifies(notify2);
+            foreach (var notifier in Notifiers)
+            {
+                notifier.CreateNotifyRange(notifyDtos).SendNotifyRange();
+            }
+            notifyDtos = await GenerateNotifies(notify3);
+            foreach (var notifier in Notifiers)
+            {
+                notifier.CreateNotifyRange(notifyDtos).SendNotifyRange();
+            }
+        }
+
+        private async Task<List<NotifyDTO>> GenerateNotifies(List<NotifyDTO> baseNotifyDtos)
+        {
+            var notifies = new List<NotifyDTO>();
+            foreach (var notifyDtos in baseNotifyDtos)
+            {
+                var users = await _userRepository.GetRelatedUsers(notifyDtos.OrganizationID);
+                notifies.AddRange(users.Select(user =>
+                        new NotifyDTO
+                        {
+                            PersianDateTime = notifyDtos.PersianDateTime,
+                            NotifyID = notifyDtos.NotifyID,
+                            PhoneID = notifyDtos.PhoneID,
+                            EventDescription = notifyDtos.EventDescription,
+                            PriorityName = notifyDtos.PriorityName,
+                            Priority = notifyDtos.Priority,
+                            ProjectID = notifyDtos.ProjectID,
+                            UserID = notifyDtos.UserID,
+                            PhoneNumber = notifyDtos.PhoneNumber,
+                            OrganizationID = notifyDtos.OrganizationID,
+                            NotifyTypeID = notifyDtos.NotifyTypeID,
+                            NotifyColor = notifyDtos.NotifyColor,
+                            ProjectDetailUrl = notifyDtos.ProjectDetailUrl,
+                            ProjectPhoneDetailUrl = notifyDtos.ProjectPhoneDetailUrl,
+                            ProjectDetail = notifyDtos.ProjectDetail,
+                            Seen = notifyDtos.Seen,
+                            ProjectAdminDetail = notifyDtos.ProjectAdminDetail,
+                            ProjectPhoneDetail = notifyDtos.ProjectPhoneDetail,
+                            ToEmail = user.Email
+                        }).ToList()
+                    );
+            }
+
+            return notifies;
         }
 
         public Task RunActions()

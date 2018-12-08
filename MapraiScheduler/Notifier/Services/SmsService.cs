@@ -1,10 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Kavenegar;
+﻿using Kavenegar;
 using Kavenegar.Exceptions;
 using MapraiScheduler.Models.DTO;
+using System;
+using System.Collections.Generic;
 
 namespace MapraiScheduler.Notifier.Services
 {

@@ -1,14 +1,13 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using MapraiScheduler.Models.Database;
+﻿using MapraiScheduler.Models.Database;
 using MapraiScheduler.Models.DTO;
 using MapraiScheduler.Notifier;
-using MapraiScheduler.TaskManager.Commands;
 using MD.PersianDateTime;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Extensions.Internal;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace MapraiScheduler.Repositories
 {
@@ -81,7 +80,7 @@ namespace MapraiScheduler.Repositories
             return notifyDtos;
         }
 
-        public async Task StopProjects(List<Project> invalidProjects)
+        public void StopProjects(List<Project> invalidProjects)
         {
             foreach (var project in invalidProjects)
             {
@@ -104,12 +103,15 @@ namespace MapraiScheduler.Repositories
 
         public async Task<List<Project>> GetEmptyDamageReportProjects(int level)
         {
-            return await _mapRaiContex.Projects.Join(_mapRaiContex.Notifiers, p => p.ProjectID, n => n.ProjectID,
-                    (p, n) => new { Project = p, Notify = n })
-                    .Where(item => item.Notify == null || item.Notify.NotifyID == 0 || item.Notify.NotifyID == null)
-                    .Where(item => (DateTime.Now - item.Project.FinishDate).Days >= 1 &&
-                               (item.Project.ProjectPhaseID == 1 || item.Project.ProjectPhaseID == 3)
-                               && (item.Project.ReportRawFileID == 0 || item.Project.ReportFileID == 0))
+            return await _mapRaiContex.Projects.Join(_mapRaiContex.DamageReports,
+                    p => p.ProjectID, d => d.ProjectID, (p, n) => new { Project = p, DamageReport = n })
+                    .Join(_mapRaiContex.Notifiers, p => p.DamageReport.ProjectReportID, n => n.ProjectID,
+                    (p, n) => new { p.Project, p.DamageReport, Notify = n })
+                    .Where(item => item.Notify == null || item.Notify.NotifyID == 0)
+                    .Where(item => item.DamageReport.LetterFileID == 0 && item.DamageReport.DamageReportLevel == level
+                    && !item.DamageReport.IsFinished && !item.DamageReport.IsArchive)
+                    .Where(item => (DateTime.Now - item.DamageReport.CreationDate).Days >= 30 &&
+                               (item.Project.ProjectPhaseID == 1 || item.Project.ProjectPhaseID == 3))
                 .Select(item => item.Project).ToListAsync();
         }
     }

@@ -1,9 +1,7 @@
-﻿using System;
+﻿using MapraiScheduler.Notifier;
+using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
-using MapraiScheduler.Notifier;
-using MapraiScheduler.TaskManager.Commands.Action;
 
 namespace MapraiScheduler.TaskManager.Commands
 {

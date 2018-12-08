@@ -1,5 +1,3 @@
-using System;
-
 namespace MapraiScheduler.Models
 {
     public class ErrorViewModel

@@ -1,8 +1,8 @@
-﻿using System.Collections.Generic;
+﻿using MapraiScheduler.Models.Database;
+using MapraiScheduler.Models.DTO;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using MapraiScheduler.Models.Database;
-using MapraiScheduler.Models.DTO;
 
 namespace MapraiScheduler.Repositories
 {
@@ -18,6 +18,6 @@ namespace MapraiScheduler.Repositories
 
         Task<List<NotifyDTO>> GetInvalidProjectsNotifies(List<long> projectIds, string notifyUniqueName);
 
-        Task StopProjects(List<Project> invalidProjects);
+        void StopProjects(List<Project> invalidProjects);
     }
 }

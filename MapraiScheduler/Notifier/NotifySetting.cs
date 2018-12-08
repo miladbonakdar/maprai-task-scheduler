@@ -1,9 +1,6 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace MapraiScheduler.Notifier
 {
@@ -93,6 +90,7 @@ namespace MapraiScheduler.Notifier
             public static string FromEmailAddress => "raimap.notifier@gmail.com";
             public static string FromEmailPassword => "R@im@p 123456";
             public static string GoogleSmtpAddress => "smtp.gmail.com";
+            public static string SerlogEmailSubject => "maprai log (serilog)";
             public static int GoogleSmtpPort => 587;
 
             public static string EmailTemplate => @"

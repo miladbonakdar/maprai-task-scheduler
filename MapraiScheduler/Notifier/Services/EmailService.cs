@@ -1,12 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+﻿using MapraiScheduler.Models.DTO;
+using System;
 using System.Net;
 using System.Net.Mail;
-using System.Threading.Tasks;
-using MapraiScheduler.Models.Database;
-using MapraiScheduler.Models.DTO;
-using Microsoft.AspNetCore.Server.Kestrel.Core;
 
 namespace MapraiScheduler.Notifier.Services
 {

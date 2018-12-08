@@ -1,7 +1,7 @@
-﻿using System.Collections.Generic;
-using System.Threading.Tasks;
-using MapraiScheduler.Models.Database;
+﻿using MapraiScheduler.Models.Database;
 using MapraiScheduler.Models.DTO;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace MapraiScheduler.Repositories
 {
