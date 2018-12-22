@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MapraiScheduler.Repositories
+namespace MapraiScheduler.Repositories.Contracts
 {
     public interface INotifyRepository
     {
@@ -10,6 +10,6 @@ namespace MapraiScheduler.Repositories
 
         Task AddRange(List<Notify> notifyRange);
 
-        Task<bool> ChechIfNotifyDoesNotExist(long invalidPhonePhoneId, int timeStampMiniute);
+        Task<bool> ChechIfNotifyDoesNotExist(long invalidPhonePhoneId, int timeStampMiniute, long notifyType = 4);
     }
 }

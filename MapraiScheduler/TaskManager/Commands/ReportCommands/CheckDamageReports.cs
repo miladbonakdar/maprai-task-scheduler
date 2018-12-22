@@ -1,7 +1,8 @@
-﻿using MapraiScheduler.Models.Database;
+﻿using MapraiScheduler.Exception;
+using MapraiScheduler.Models.Database;
 using MapraiScheduler.Models.DTO;
 using MapraiScheduler.Notifier;
-using MapraiScheduler.Repositories;
+using MapraiScheduler.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -30,7 +31,7 @@ namespace MapraiScheduler.TaskManager.Commands.ReportCommands
 
         public void CreateActions()
         {
-            throw new NotImplementedException();
+            throw new AppDefaultException(new NotImplementedException(), "CreateActions");
         }
 
         public async Task Execute()
@@ -75,31 +76,34 @@ namespace MapraiScheduler.TaskManager.Commands.ReportCommands
             var notifies = new List<NotifyDTO>();
             foreach (var notifyDtos in baseNotifyDtos)
             {
-                var users = await _userRepository.GetRelatedUsers(notifyDtos.OrganizationID);
-                notifies.AddRange(users.Select(user =>
-                        new NotifyDTO
-                        {
-                            PersianDateTime = notifyDtos.PersianDateTime,
-                            NotifyID = notifyDtos.NotifyID,
-                            PhoneID = notifyDtos.PhoneID,
-                            EventDescription = notifyDtos.EventDescription,
-                            PriorityName = notifyDtos.PriorityName,
-                            Priority = notifyDtos.Priority,
-                            ProjectID = notifyDtos.ProjectID,
-                            UserID = notifyDtos.UserID,
-                            PhoneNumber = notifyDtos.PhoneNumber,
-                            OrganizationID = notifyDtos.OrganizationID,
-                            NotifyTypeID = notifyDtos.NotifyTypeID,
-                            NotifyColor = notifyDtos.NotifyColor,
-                            ProjectDetailUrl = notifyDtos.ProjectDetailUrl,
-                            ProjectPhoneDetailUrl = notifyDtos.ProjectPhoneDetailUrl,
-                            ProjectDetail = notifyDtos.ProjectDetail,
-                            Seen = notifyDtos.Seen,
-                            ProjectAdminDetail = notifyDtos.ProjectAdminDetail,
-                            ProjectPhoneDetail = notifyDtos.ProjectPhoneDetail,
-                            ToEmail = user.Email
-                        }).ToList()
+                if (notifyDtos.OrganizationID != null)
+                {
+                    var users = await _userRepository.GetRelatedUsers(notifyDtos.OrganizationID.Value);
+                    notifies.AddRange(users.Select(user =>
+                            new NotifyDTO
+                            {
+                                PersianDateTime = notifyDtos.PersianDateTime,
+                                NotifyID = notifyDtos.NotifyID,
+                                PhoneID = notifyDtos.PhoneID,
+                                EventDescription = notifyDtos.EventDescription,
+                                PriorityName = notifyDtos.PriorityName,
+                                Priority = notifyDtos.Priority,
+                                ProjectID = notifyDtos.ProjectID,
+                                UserID = notifyDtos.UserID,
+                                PhoneNumber = notifyDtos.PhoneNumber,
+                                OrganizationID = notifyDtos.OrganizationID,
+                                NotifyTypeID = notifyDtos.NotifyTypeID,
+                                NotifyColor = notifyDtos.NotifyColor,
+                                ProjectDetailUrl = notifyDtos.ProjectDetailUrl,
+                                ProjectPhoneDetailUrl = notifyDtos.ProjectPhoneDetailUrl,
+                                ProjectDetail = notifyDtos.ProjectDetail,
+                                Seen = notifyDtos.Seen,
+                                ProjectAdminDetail = notifyDtos.ProjectAdminDetail,
+                                ProjectPhoneDetail = notifyDtos.ProjectPhoneDetail,
+                                ToEmail = user.Email
+                            }).ToList()
                     );
+                }
             }
 
             return notifies;
@@ -107,7 +111,7 @@ namespace MapraiScheduler.TaskManager.Commands.ReportCommands
 
         public Task RunActions()
         {
-            throw new NotImplementedException();
+            throw new AppDefaultException(new NotImplementedException(), "RunActions");
         }
     }
 }

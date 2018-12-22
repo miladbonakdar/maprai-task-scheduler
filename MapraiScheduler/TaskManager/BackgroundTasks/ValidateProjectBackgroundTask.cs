@@ -1,6 +1,7 @@
 ﻿using Hangfire;
 using MapraiScheduler.Exception;
 using MapraiScheduler.TaskManager.Commands;
+using MapraiScheduler.TaskManager.Commands.ProjectCommands;
 
 namespace MapraiScheduler.TaskManager.BackgroundTasks
 {

@@ -31,11 +31,11 @@ namespace MapraiScheduler.Models.Database
         public DateTime CreationDate { get; set; }
         public DateTime ExpireDate { get; set; }
         public string LetterNumber { get; set; }
-        public DateTime LetterDate { get; set; }
+        public DateTime? LetterDate { get; set; }
         public long LetterFileID { get; set; }
         public long PreDamageReportID { get; set; }
-        public bool IsArchive { get; set; }
+        public int IsArchive { get; set; }
         public long ReplyFileID { get; set; }
-        public bool IsFinished { get; set; }
+        public int IsFinished { get; set; }
     }
 }

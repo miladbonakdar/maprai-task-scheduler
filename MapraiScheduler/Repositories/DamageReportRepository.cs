@@ -1,4 +1,6 @@
-﻿namespace MapraiScheduler.Repositories
+﻿using MapraiScheduler.Repositories.Contracts;
+
+namespace MapraiScheduler.Repositories
 {
     public class DamageReportRepository : IDamageReportRepository
     {

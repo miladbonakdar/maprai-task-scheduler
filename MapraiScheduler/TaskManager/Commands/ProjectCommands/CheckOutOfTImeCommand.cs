@@ -1,13 +1,14 @@
 ﻿using MapraiScheduler.Models.Database;
 using MapraiScheduler.Models.DTO;
 using MapraiScheduler.Notifier;
-using MapraiScheduler.Repositories;
+using MapraiScheduler.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using MapraiScheduler.Exception;
 
-namespace MapraiScheduler.TaskManager.Commands
+namespace MapraiScheduler.TaskManager.Commands.ProjectCommands
 {
     public class CheckOutOfTimeCommand : ICheckOutOfTimeCommand
     {
@@ -18,7 +19,7 @@ namespace MapraiScheduler.TaskManager.Commands
         private List<Project> _invalidProjs;
 
         public CheckOutOfTimeCommand(IProjectRepository projectRepository, IUserRepository userRepository,
-            IAppNotifier appNotifier, IEmailNotifier emailNotifier, ISmsNotifier smsNotifier)
+            IAppNotifier appNotifier, IEmailNotifier emailNotifier/*, ISmsNotifier smsNotifier*/)
         {
             _projectRepository = projectRepository;
             _userRepository = userRepository;
@@ -28,13 +29,14 @@ namespace MapraiScheduler.TaskManager.Commands
 
         public void CreateActions()
         {
+            throw new AppDefaultException(new NotImplementedException(), "CheckOutOfTimeCommand CreateActions");
         }
 
         public async Task Execute()
         {
             _invalidProjs = await GetInvalidProjects();
             await NotifyProblems();
-            CreateActions();
+            //CreateActions();
             await RunActions();
         }
 
@@ -55,31 +57,34 @@ namespace MapraiScheduler.TaskManager.Commands
             var notifies = new List<NotifyDTO>();
             foreach (var notifyDtos in baseNotifyDtos)
             {
-                var users = await _userRepository.GetRelatedUsers(notifyDtos.OrganizationID);
-                notifies.AddRange(users.Select(user =>
-                        new NotifyDTO
-                        {
-                            PersianDateTime = notifyDtos.PersianDateTime,
-                            NotifyID = notifyDtos.NotifyID,
-                            PhoneID = notifyDtos.PhoneID,
-                            EventDescription = notifyDtos.EventDescription,
-                            PriorityName = notifyDtos.PriorityName,
-                            Priority = notifyDtos.Priority,
-                            ProjectID = notifyDtos.ProjectID,
-                            PhoneNumber = notifyDtos.PhoneNumber,
-                            UserID = notifyDtos.UserID,
-                            OrganizationID = notifyDtos.OrganizationID,
-                            NotifyTypeID = notifyDtos.NotifyTypeID,
-                            NotifyColor = notifyDtos.NotifyColor,
-                            ProjectDetailUrl = notifyDtos.ProjectDetailUrl,
-                            ProjectPhoneDetailUrl = notifyDtos.ProjectPhoneDetailUrl,
-                            ProjectDetail = notifyDtos.ProjectDetail,
-                            Seen = notifyDtos.Seen,
-                            ProjectAdminDetail = notifyDtos.ProjectAdminDetail,
-                            ProjectPhoneDetail = notifyDtos.ProjectPhoneDetail,
-                            ToEmail = user.Email
-                        }).ToList()
+                if (notifyDtos.OrganizationID != null)
+                {
+                    var users = await _userRepository.GetRelatedUsers(notifyDtos.OrganizationID.Value);
+                    notifies.AddRange(users.Select(user =>
+                            new NotifyDTO
+                            {
+                                PersianDateTime = notifyDtos.PersianDateTime,
+                                NotifyID = notifyDtos.NotifyID,
+                                PhoneID = notifyDtos.PhoneID,
+                                EventDescription = notifyDtos.EventDescription,
+                                PriorityName = notifyDtos.PriorityName,
+                                Priority = notifyDtos.Priority,
+                                ProjectID = notifyDtos.ProjectID,
+                                PhoneNumber = notifyDtos.PhoneNumber,
+                                UserID = notifyDtos.UserID,
+                                OrganizationID = notifyDtos.OrganizationID,
+                                NotifyTypeID = notifyDtos.NotifyTypeID,
+                                NotifyColor = notifyDtos.NotifyColor,
+                                ProjectDetailUrl = notifyDtos.ProjectDetailUrl,
+                                ProjectPhoneDetailUrl = notifyDtos.ProjectPhoneDetailUrl,
+                                ProjectDetail = notifyDtos.ProjectDetail,
+                                Seen = notifyDtos.Seen,
+                                ProjectAdminDetail = notifyDtos.ProjectAdminDetail,
+                                ProjectPhoneDetail = notifyDtos.ProjectPhoneDetail,
+                                ToEmail = user.Email
+                            }).ToList()
                     );
+                }
             }
 
             return notifies;
@@ -89,7 +94,7 @@ namespace MapraiScheduler.TaskManager.Commands
         {
             foreach (var commandAction in CommandActions)
             {
-                commandAction.Run();
+                await commandAction.RunAsync();
             }
         }
 

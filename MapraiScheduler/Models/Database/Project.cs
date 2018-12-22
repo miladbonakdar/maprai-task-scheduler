@@ -20,7 +20,7 @@ namespace MapraiScheduler.Models.Database
         public long ProjectPhaseID { get; set; }
         public long? StartStationID { get; set; }
         public long? EndStationID { get; set; }
-        public DateTime FinishDate { get; set; }
+        public DateTime? FinishDate { get; set; }
         public DateTime StartDate { get; set; }
         public long ProjectFailureCauseID { get; set; }
         public long CableID { get; set; }

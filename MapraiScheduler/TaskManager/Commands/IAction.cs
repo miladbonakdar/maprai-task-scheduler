@@ -4,7 +4,7 @@ namespace MapraiScheduler.TaskManager.Commands
 {
     public interface IAction
     {
-        Task<IAction> Run();
+        Task<IAction> RunAsync();
 
         IAction SetDatas(object dataToSet);
     }

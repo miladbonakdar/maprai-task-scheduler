@@ -7,20 +7,28 @@ namespace MapraiScheduler.TaskManager
 {
     public class TaskManager : ITaskManager
     {
-        private List<IBackgroundTask> _backgroundTasks;
+        private readonly List<IBackgroundTask> _backgroundTasks;
 
-        public TaskManager(IValidateProjectBackgroundTask validateProjectBackgroundTask)
+        public TaskManager(IValidateProjectBackgroundTask validateProjectBackgroundTask,
+            IValidateReportsBackgroundTask validateReportsBackgroundTask)
         {
-            _backgroundTasks = new List<IBackgroundTask> { validateProjectBackgroundTask };
+            _backgroundTasks = new List<IBackgroundTask> { validateProjectBackgroundTask, validateReportsBackgroundTask };
         }
 
         public ITaskManager StartBackgroundTasks()
         {
-            if (_backgroundTasks.Count == 0)
-                throw new BackgroundTaskException("The tasks list is empty . please create some task first");
-            foreach (var backgroundTask in _backgroundTasks)
+            try
             {
-                backgroundTask.Setup();
+                if (_backgroundTasks.Count == 0)
+                    throw new BackgroundTaskException("The tasks list is empty . please create some task first");
+                foreach (var backgroundTask in _backgroundTasks)
+                {
+                    backgroundTask.Setup();
+                }
+            }
+            catch (System.Exception e)
+            {
+                throw new AppDefaultException(e);
             }
             return this;
         }

@@ -17,9 +17,9 @@ namespace MapraiScheduler.Models.Database
         public string Password { get; set; }
         public string Username { get; set; }
         public string PhoneNumber { get; set; }
-        public bool ValidSessionID { get; set; }
+        public int ValidSessionID { get; set; }
         public DateTime SignupDate { get; set; }
-        public bool Gender { get; set; }
+        public int Gender { get; set; }
         public string Description { get; set; }
         public long AvatarID { get; set; }
         public string SessionID { get; set; }

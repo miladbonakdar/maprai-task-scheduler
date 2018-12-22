@@ -2,12 +2,12 @@
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MapraiScheduler.Repositories
+namespace MapraiScheduler.Repositories.Contracts
 {
     public interface INotifyTypeRepository
     {
         IQueryable<NotifyType> GetAll();
 
-        Task<NotifyType> Get(string uniqueName);
+        Task<NotifyType> GetAsync(string uniqueName);
     }
 }

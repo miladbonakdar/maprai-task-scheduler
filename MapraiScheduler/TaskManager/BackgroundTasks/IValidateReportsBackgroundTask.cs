@@ -2,7 +2,7 @@
 
 namespace MapraiScheduler.TaskManager.BackgroundTasks
 {
-    internal interface IValidateReportsBackgroundTask : IBackgroundTask
+    public interface IValidateReportsBackgroundTask : IBackgroundTask
     {
     }
 }

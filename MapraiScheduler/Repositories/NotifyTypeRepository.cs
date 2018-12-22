@@ -1,4 +1,6 @@
-﻿using MapraiScheduler.Models.Database;
+﻿using MapraiScheduler.Exception;
+using MapraiScheduler.Models.Database;
+using MapraiScheduler.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System.Threading.Tasks;
@@ -14,14 +16,19 @@ namespace MapraiScheduler.Repositories
             _mapRaiContex = mapRaiContex;
         }
 
-        public IQueryable<NotifyType> GetAll()
-        {
-            return _mapRaiContex.NotifyTypes;
-        }
+        public IQueryable<NotifyType> GetAll() => _mapRaiContex.NotifyTypes;
 
-        public async Task<NotifyType> Get(string uniqueName)
+        //TESTED AND IT IS FINE
+        public async Task<NotifyType> GetAsync(string uniqueName)
         {
-            return await GetAll().FirstOrDefaultAsync(item => item.UniqueName == uniqueName);
+            try
+            {
+                return await GetAll().FirstOrDefaultAsync(item => item.UniqueName == uniqueName);
+            }
+            catch (System.Exception e)
+            {
+                throw new AppDefaultException(e, "NotifyTypeRepository GetAsync");
+            }
         }
     }
 }

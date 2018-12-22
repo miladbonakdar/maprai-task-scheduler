@@ -1,4 +1,6 @@
-﻿using MapraiScheduler.Models.Database;
+﻿using MapraiScheduler.Exception;
+using MapraiScheduler.Models.Database;
+using MapraiScheduler.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -18,22 +20,44 @@ namespace MapraiScheduler.Repositories
 
         public async Task Insert(Notify notify)
         {
-            _mapRaiContex.Notifiers.Add(notify);
-            await _mapRaiContex.SaveChangesAsync();
+            try
+            {
+                _mapRaiContex.Notifiers.Add(notify);
+                await _mapRaiContex.SaveChangesAsync();
+            }
+            catch (System.Exception e)
+            {
+                throw new AppDefaultException(e, "NotifyRepository Insert");
+            }
         }
 
         public async Task AddRange(List<Notify> notifyRange)
         {
-            _mapRaiContex.Notifiers.AddRange(notifyRange);
-            await _mapRaiContex.SaveChangesAsync();
+            try
+            {
+                _mapRaiContex.Notifiers.AddRange(notifyRange);
+                await _mapRaiContex.SaveChangesAsync();
+            }
+            catch (System.Exception e)
+            {
+                throw new AppDefaultException(e, "NotifyRepository AddRange");
+            }
         }
 
-        public async Task<bool> ChechIfNotifyDoesNotExist(long invalidPhonePhoneId, int timeStampMiniute)
+        //TESTED AND IT IS FINE
+        public async Task<bool> ChechIfNotifyDoesNotExist(long invalidPhonePhoneId, int timeStampMiniute, long notifyType = 4/* for idle users */)
         {
-            var lastNotify = await _mapRaiContex.Notifiers.Where(not =>
-                not.PhoneID != null && not.PhoneID == invalidPhonePhoneId &&
-                (DateTime.Now - not.CreationDate).Minutes < timeStampMiniute).FirstOrDefaultAsync();
-            return lastNotify == null;
+            try
+            {
+                var lastNotify = await _mapRaiContex.Notifiers.Where(not =>
+                    not.PhoneID != null && not.PhoneID == invalidPhonePhoneId && not.NotifyTypeID == notifyType &&
+                    (DateTime.Now - not.CreationDate).TotalMinutes < timeStampMiniute).FirstOrDefaultAsync();
+                return lastNotify == null;
+            }
+            catch (System.Exception e)
+            {
+                throw new AppDefaultException(e, "NotifyRepository ChechIfNotifyDoesNotExist");
+            }
         }
     }
 }

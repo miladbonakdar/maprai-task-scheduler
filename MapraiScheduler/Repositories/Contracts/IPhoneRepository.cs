@@ -3,7 +3,7 @@ using MapraiScheduler.Models.DTO;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MapraiScheduler.Repositories
+namespace MapraiScheduler.Repositories.Contracts
 {
     public interface IPhoneRepository
     {

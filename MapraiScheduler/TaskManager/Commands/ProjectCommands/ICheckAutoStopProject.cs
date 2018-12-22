@@ -1,4 +1,4 @@
-﻿namespace MapraiScheduler.TaskManager.Commands
+﻿namespace MapraiScheduler.TaskManager.Commands.ProjectCommands
 {
     public interface ICheckAutoStopProject : ICommand
     {

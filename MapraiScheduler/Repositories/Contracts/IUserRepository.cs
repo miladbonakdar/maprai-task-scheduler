@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MapraiScheduler.Repositories
+namespace MapraiScheduler.Repositories.Contracts
 {
     public interface IUserRepository
     {
         IQueryable<User> GetAll();
 
-        Task<List<User>> GetRelatedUsers(long? organizationId);
+        Task<List<User>> GetRelatedUsers(long organizationId);
     }
 }

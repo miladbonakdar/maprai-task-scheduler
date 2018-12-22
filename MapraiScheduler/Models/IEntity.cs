@@ -1,4 +1,4 @@
-﻿namespace MapraiScheduler.Models.Database
+﻿namespace MapraiScheduler.Models
 {
     public interface IEntity
     {

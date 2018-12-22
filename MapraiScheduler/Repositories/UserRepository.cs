@@ -1,6 +1,7 @@
-﻿using MapraiScheduler.Models.Database;
+﻿using MapraiScheduler.Exception;
+using MapraiScheduler.Models.Database;
+using MapraiScheduler.Repositories.Contracts;
 using Microsoft.EntityFrameworkCore;
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -16,11 +17,17 @@ namespace MapraiScheduler.Repositories
             _mapRaiContex = mapRaiContex;
         }
 
-        public Task<List<User>> GetRelatedUsers(long? organizationId)
+        //TESTED AND IT IS WOTKING FINE
+        public Task<List<User>> GetRelatedUsers(long organizationId)
         {
-            if (organizationId == null)
-                throw new ArgumentNullException(nameof(organizationId));
-            return GetAll().Where(item => item.OrganizationID == organizationId.Value || item.OrganizationID == 1).ToListAsync();
+            try
+            {
+                return GetAll().Where(item => item.OrganizationID == organizationId || item.OrganizationID == 1).ToListAsync();
+            }
+            catch (System.Exception e)
+            {
+                throw new AppDefaultException(e, "GetRelatedUsers");
+            }
         }
 
         public IQueryable<User> GetAll()

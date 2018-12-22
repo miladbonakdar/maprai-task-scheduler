@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Serilog;
+﻿using Serilog;
 
 namespace MapraiScheduler.Exception
 {
@@ -17,12 +13,17 @@ namespace MapraiScheduler.Exception
 
         public AppDefaultException(string message, System.Exception innerException) : base(message, innerException)
         {
-            Log.Error(message, innerException);
+            Log.Error(this.ToString(), innerException);
         }
 
-        public AppDefaultException(System.Exception innerException) : base(_messageString, innerException)
+        public AppDefaultException(System.Exception innerException, string thrownFrom = "Unknown") : base($"{_messageString} - thrownFrom : {thrownFrom}", innerException)
         {
-            Log.Error(_messageString, innerException);
+            Log.Error(this.ToString(), innerException);
+        }
+
+        public sealed override string ToString()
+        {
+            return base.ToString();
         }
     }
 }

@@ -25,6 +25,8 @@ namespace MapraiScheduler.Notifier
             Dangerous = 5
         }
 
+        public static int InvalidUserMiniutesThreshhold => 7 * 24 * 60;
+
         public static string GetDescription<T>(this T enumerationValue)
             where T : struct
         {

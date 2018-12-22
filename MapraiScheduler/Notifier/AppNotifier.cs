@@ -1,6 +1,6 @@
 ﻿using MapraiScheduler.Models.Database;
 using MapraiScheduler.Models.DTO;
-using MapraiScheduler.Repositories;
+using MapraiScheduler.Repositories.Contracts;
 using System;
 using System.Collections.Generic;
 
@@ -26,7 +26,7 @@ namespace MapraiScheduler.Notifier
                 PhoneID = notifyDto.PhoneID,
                 Priority = notifyDto.Priority,
                 ProjectID = notifyDto.PhoneID,
-                Seen = false,
+                Seen = 0,
                 UserID = notifyDto.UserID
             };
             return this;
@@ -46,7 +46,7 @@ namespace MapraiScheduler.Notifier
                     PhoneID = notifyDto.PhoneID,
                     Priority = notifyDto.Priority,
                     ProjectID = notifyDto.ProjectID,
-                    Seen = false,
+                    Seen = 0,
                     UserID = notifyDto.UserID
                 });
             }

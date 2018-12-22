@@ -16,7 +16,7 @@ namespace MapraiScheduler.Models.Database
         public int MachineDigging { get; set; }
         public int CableMeter { get; set; }
         public int JointBoxCount { get; set; }
-        public DateTime OTDRTestDate { get; set; }
+        public DateTime? OTDRTestDate { get; set; }
         public long OTDRTestLocationID { get; set; }
         public int ConcretingMeter { get; set; }
         public int STMDownTime { get; set; }

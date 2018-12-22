@@ -10,17 +10,17 @@ namespace MapraiScheduler.TaskManager.BackgroundTasks
         public string Interval { get; } = Cron.Daily();
 
         public ValidateReportsBackgroundTask(ICheckProjectReports checkProjectReports
-            , ICheckDamageReports CheckDamageReports) : base()
+            , ICheckDamageReports checkDamageReports) : base()
         {
-            InitCommands(checkProjectReports, CheckDamageReports);
+            InitCommands(checkProjectReports, checkDamageReports);
         }
 
         public void InitCommands(ICheckProjectReports checkProjectReports
-            , ICheckDamageReports CheckDamageReports)
+            , ICheckDamageReports checkDamageReports)
         {
             base.InitCommands();
             BackgroundCommands.Add(checkProjectReports);
-            BackgroundCommands.Add(CheckDamageReports);
+            BackgroundCommands.Add(checkDamageReports);
         }
 
         public override void Setup()

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
-namespace MapraiScheduler.Repositories
+namespace MapraiScheduler.Repositories.Contracts
 {
     public interface IProjectRepository
     {
@@ -18,6 +18,6 @@ namespace MapraiScheduler.Repositories
 
         Task<List<NotifyDTO>> GetInvalidProjectsNotifies(List<long> projectIds, string notifyUniqueName);
 
-        void StopProjects(List<Project> invalidProjects);
+        Task StopProjectsAsync(List<Project> invalidProjects);
     }
 }

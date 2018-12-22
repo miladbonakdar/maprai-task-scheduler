@@ -1,9 +1,9 @@
 ﻿using MapraiScheduler.Models.Database;
-using MapraiScheduler.Repositories;
+using MapraiScheduler.Repositories.Contracts;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MapraiScheduler.TaskManager.Commands.Action
+namespace MapraiScheduler.TaskManager.Commands.ProjectCommands.Actions
 {
     public class StopProjectsAction : IStopProjectsAction
     {
@@ -21,9 +21,9 @@ namespace MapraiScheduler.TaskManager.Commands.Action
             return this;
         }
 
-        public async Task<IAction> Run()
+        public async Task<IAction> RunAsync()
         {
-            _projectRepository.StopProjects(InvalidProjects);
+            await _projectRepository.StopProjectsAsync(InvalidProjects);
             return this;
         }
     }

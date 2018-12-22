@@ -5,11 +5,11 @@ using System.Collections.Generic;
 
 namespace MapraiScheduler.TaskManager.BackgroundTasks
 {
-    public class BackgroundTask : IBackgroundTask
+    public abstract class BackgroundTask : IBackgroundTask
     {
         protected List<ICommand> BackgroundCommands;
 
-        public BackgroundTask()
+        protected BackgroundTask()
         {
             InitCommands();
         }
@@ -20,11 +20,11 @@ namespace MapraiScheduler.TaskManager.BackgroundTasks
                 throw new BackgroundTaskException("BackgroundCommands is empty make sure you created the commands first");
         }
 
-        public virtual void InitCommands()
+        public void InitCommands()
         {
             BackgroundCommands = new List<ICommand>
             {
-                new LogCommand(this.GetType())
+                new LogCommand(GetType())
             };
         }
     }

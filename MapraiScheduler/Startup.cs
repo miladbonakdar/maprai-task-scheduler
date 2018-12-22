@@ -1,9 +1,12 @@
 ﻿using Hangfire;
+using MapraiScheduler.Exception;
 using MapraiScheduler.Notifier;
 using MapraiScheduler.Repositories;
+using MapraiScheduler.Repositories.Contracts;
 using MapraiScheduler.TaskManager.BackgroundTasks;
 using MapraiScheduler.TaskManager.Commands;
-using MapraiScheduler.TaskManager.Commands.Action;
+using MapraiScheduler.TaskManager.Commands.ProjectCommands;
+using MapraiScheduler.TaskManager.Commands.ProjectCommands.Actions;
 using MapraiScheduler.TaskManager.Commands.ReportCommands;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -18,7 +21,6 @@ using System;
 using System.Linq;
 using System.Net;
 using System.Reflection;
-using MapraiScheduler.Exception;
 using ILogger = Serilog.ILogger;
 
 namespace MapraiScheduler
@@ -50,7 +52,7 @@ namespace MapraiScheduler
                 .WriteTo.Email(new EmailConnectionInfo
                 {
                     FromEmail = NotifySetting.EmailStatics.FromEmailAddress,
-                    ToEmail = "miladbonak@gmail.com",
+                    ToEmail = Configuration["SeriLogForwardingEmail"],
                     MailServer = NotifySetting.EmailStatics.GoogleSmtpAddress,
                     NetworkCredentials = new NetworkCredential
                     {
